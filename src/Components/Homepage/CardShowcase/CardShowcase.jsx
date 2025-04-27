@@ -5,7 +5,11 @@ import { useAppContext } from '../../../Context/AppContext';
 
 const CardShowcase = () => {
       const { user, setUser, theme, toggleTheme, loading,data } = useAppContext();
-
+    if(loading){
+        return (
+            <span className="loading loading-spinner flex justify-center items-center loading-xl text-error"></span>
+        )
+    }
     return (
         <div className='mt-24'>
             <Heading text={'Our products'} />

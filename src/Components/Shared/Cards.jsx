@@ -48,7 +48,7 @@ const Cards = ({ product }) => {
 
                     {/* Price Section */}
                     <div className="flex items-baseline gap-3">
-                        <p className="text-xl font-extrabold text-gray-900">{currentPrice}</p>
+                        <p className="text-xl font-extrabold text-gray-900">{currentPrice} TK</p>
                         {hasDiscount> 0 && (
                             <p className="text-lg line-through text-red-400">{product.price}</p>
                         )}

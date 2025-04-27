@@ -27,9 +27,11 @@ const cartSlice = createSlice({
       state.items = [];
     },
     updateQuantity: (state, action) => {
-      const item = state.items.find(item => item.id === action.payload.id);
+      const { id, quantity } = action.payload;
+      const item = state.items.find(item => item.id === id);
       if (item) {
-        item.quantity = action.payload.quantity;
+        item.quantity = quantity;
+        item.total = item.price * quantity;
       }
     },
   },

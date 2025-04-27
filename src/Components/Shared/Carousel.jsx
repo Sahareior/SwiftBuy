@@ -47,18 +47,20 @@ export default function CustomCarousel({ images, type, testimoni }) {
         modules={[Pagination, Navigation]}
         className="mySwiper"
       >
-        {!type &&
-          images.map((items, index) => (
-            <SwiperSlide key={index}>
-              <LazyLoadImage
-                src={items.image}
-                alt=""
-                effect="blur" // 👈 adds a nice blur while loading
-                className="md:h-[90vh] w-full object-cover" // added w-full and object-cover to make it responsive
-              />
-            </SwiperSlide>
-          ))
-        }
+{!type &&
+  images.map((items, index) => (
+    <SwiperSlide key={index}>
+      <LazyLoadImage
+        src={items.image}
+        alt=""
+        effect="blur"
+        className="h-[40vh] md:h-[90vh] w-full object-cover object-[90%_center]" 
+      />
+    </SwiperSlide>
+  ))
+}
+
+
         {type &&
           testimoni.map((items, index) => (
             <SwiperSlide className="pb-10" key={index}>

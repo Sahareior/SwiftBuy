@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { FaTimes, FaTrashAlt, FaArrowLeft, FaShoppingCart, FaArrowRight } from 'react-icons/fa';
 import { ToastContainer, toast } from "react-toastify";
 import axios from 'axios';
-import { clearCart, removeFromCart } from '../../Redux/slices/cartSlice';
+import { clearCart, removeFromCart, updateQuantity } from '../../Redux/slices/cartSlice';
 
 const CartModal = ({ isOpen, onClose }) => {
   const cartItems = useSelector(state => state.cart.items);
@@ -57,6 +57,14 @@ const CartModal = ({ isOpen, onClose }) => {
     }
   };
 
+  const handleQuantityChange = (itemId, newQuantity) => {
+    if (newQuantity < 1) {
+      dispatch(removeFromCart(itemId));
+    } else {
+      dispatch(updateQuantity({ id: itemId, quantity: newQuantity }));
+    }
+  };
+
   if (!isOpen) return null;
 
   return (
@@ -92,39 +100,63 @@ const CartModal = ({ isOpen, onClose }) => {
                   <>
                     <div className="space-y-4 max-h-[60vh] overflow-y-auto ">
                       {cartItems.map(item => (
-                 <div 
-                 key={item.id}
-                 className="flex flex-col w-full  sm:flex-row gap-4 md:p-4 p-1  rounded-lg hover:shadow-sm border border-base-200"
-               >
-                 <img 
-                   src={`https://admin.refabry.com/storage/product/${item.image}`} 
-                   alt={item.name}
-                   className="w-full sm:w-20 h-40 sm:h-20 object-cover rounded-lg"
-                 />
-                 <div className="flex-1">
-                   <div className="flex justify-between items-center">
-                     <h4 className="font-semibold text-lg">{item.name}</h4>
-                     <button 
-                       onClick={() => dispatch(removeFromCart(item.id))}
-                       className="text-error hover:text-error/80 transition-colors"
-                       aria-label="Remove item"
-                     >
-                       <FaTrashAlt className="w-5 h-5" />
-                     </button>
-                   </div>
-                   <p className="text-sm text-gray-500 mb-2">
-                     Size: {item.selectedSize || 'One Size'}
-                   </p>
-                   <div className="flex justify-between items-center">
-                     <span className="font-mono text-sm">
-                       {item.quantity} × ৳{item.price.toFixed(2)}
-                     </span>
-                     <span className="font-semibold text-lg">
-                       ৳{(item.total).toFixed(2)}
-                     </span>
-                   </div>
-                 </div>
-               </div>
+                        <div 
+  key={item.id}
+  className="flex flex-col sm:flex-row w-full gap-4 p-2 sm:p-4 border border-base-300 rounded-xl hover:shadow-md transition-shadow"
+>
+  <img 
+    src={`https://admin.refabry.com/storage/product/${item.image}`} 
+    alt={item.name}
+    className="w-full sm:w-28 h-44 sm:h-28 object-cover rounded-lg"
+  />
+  
+  <div className="flex flex-1 flex-col justify-between">
+    <div className="flex justify-between items-start">
+      <div>
+        <h4 className="text-base sm:text-lg font-semibold">{item.name}</h4>
+        <p className="text-xs sm:text-sm text-gray-500 mt-1">
+          Size: {item.selectedSize || 'One Size'}
+        </p>
+      </div>
+      <button 
+        onClick={() => dispatch(removeFromCart(item.id))}
+        className="text-error hover:text-error/80 transition-colors ml-2"
+        aria-label="Remove item"
+      >
+        <FaTrashAlt className="w-5 h-5" />
+      </button>
+    </div>
+
+    <div className="flex justify-between items-center mt-4">
+      <div className="flex items-center gap-4">
+        <button
+          onClick={() => handleQuantityChange(item.id, item.quantity - 1)}
+          className="btn btn-xs btn-circle btn-ghost"
+          aria-label="Decrease quantity"
+        >
+          -
+        </button>
+        <span className="font-mono text-sm">{item.quantity}</span>
+        <button
+          onClick={() => handleQuantityChange(item.id, item.quantity + 1)}
+          className="btn btn-xs btn-circle btn-ghost"
+          aria-label="Increase quantity"
+        >
+          +
+        </button>
+      </div>
+      <div className="text-right">
+        <span className="block text-xs sm:text-sm text-white">
+          {item.quantity} × {item.price.toFixed(2)}
+        </span>
+        <span className="font-bold text-base sm:text-lg">
+          {item.total.toFixed(2)}
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+
                
                       ))}
                     </div>
