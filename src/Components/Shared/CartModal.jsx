@@ -128,7 +128,7 @@ const CartModal = ({ isOpen, onClose }) => {
     </div>
 
     <div className="flex justify-between items-center mt-4">
-      <div className="flex items-center  border-white border-2 font- rounded-3xl md:w-48 justify-center py-1  gap-4">
+      <div className="flex items-center  border-teal-400 border-2 font- rounded-3xl md:w-48 justify-center py-1  gap-4">
         <button
           onClick={() => handleQuantityChange(item.id, item.quantity - 1)}
            className="w-10 h-5 flex items-center justify-center text-2xl  rounded-full hover:bg-primary hover:text-white transition"
