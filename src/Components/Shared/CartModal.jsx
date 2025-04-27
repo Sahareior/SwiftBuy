@@ -70,8 +70,8 @@ const CartModal = ({ isOpen, onClose }) => {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
       <ToastContainer />
-      <div className="modal modal-open">
-        <div className="modal-box max-w-2xl p-0 rounded-xl overflow-hidden relative">
+      <div className="modal bg-white modal-open">
+        <div className="modal-box max-w-2xl  p-0 rounded-xl overflow-hidden relative">
           {/* Header */}
           <div className="p-6 border-b border-base-200 flex justify-between items-center">
       
@@ -85,7 +85,7 @@ const CartModal = ({ isOpen, onClose }) => {
           </div>
 
           {/* Content area with transition */}
-          <div className="relative w-full h-full overflow-hidden">
+          <div className="relative  w-full h-full overflow-hidden">
             <div className={`flex transition-transform duration-500 ${isCheckoutFormOpen ? '-translate-x-full' : 'translate-x-0'}`}>
               {/* Cart View */}
               <div className="w-full p-2 flex-shrink-0 ">
@@ -128,10 +128,10 @@ const CartModal = ({ isOpen, onClose }) => {
     </div>
 
     <div className="flex justify-between items-center mt-4">
-      <div className="flex items-center gap-4">
+      <div className="flex items-center  border-white border-2 font- rounded-3xl md:w-48 justify-center py-1  gap-4">
         <button
           onClick={() => handleQuantityChange(item.id, item.quantity - 1)}
-          className="btn btn-xs btn-circle btn-ghost"
+           className="w-10 h-5 flex items-center justify-center text-2xl  rounded-full hover:bg-primary hover:text-white transition"
           aria-label="Decrease quantity"
         >
           -
@@ -139,7 +139,7 @@ const CartModal = ({ isOpen, onClose }) => {
         <span className="font-mono text-sm">{item.quantity}</span>
         <button
           onClick={() => handleQuantityChange(item.id, item.quantity + 1)}
-          className="btn btn-xs btn-circle btn-ghost"
+           className="w-10 h-5 flex items-center justify-center text-2xl  rounded-full hover:bg-primary hover:text-white transition"
           aria-label="Increase quantity"
         >
           +
