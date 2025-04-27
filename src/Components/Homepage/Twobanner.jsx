@@ -1,7 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
 import { useInView } from 'react-intersection-observer';
 
-const Banner = ({ image, altText }) => {
+const Banner = ({ image, altText, heading, subheading, buttonText }) => {
   const [ref, inView] = useInView({
     triggerOnce: true,
     rootMargin: '-100px 0px',
@@ -22,7 +22,7 @@ const Banner = ({ image, altText }) => {
           alt={altText} 
         />
       </div>
-      
+
       {/* Gradient Overlay */}
       <div className="absolute inset-0 bg-gradient-to-r from-black/30 to-transparent" />
 
@@ -31,18 +31,17 @@ const Banner = ({ image, altText }) => {
         <p className={`text-lg md:text-xl font-light mb-2 transition-all duration-500 delay-100 ${
           inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
         }`}>
-          Spring Collections
+          {heading}
         </p>
-        <h5 className={`text-3xl mt-5 md:text-5xl font-bold mb-4 transition-all duration-500 delay-200 ${
+        <h5 className={`text-3xl my-8 md:text-5xl font-bold mb-4 transition-all duration-500 delay-200 ${
           inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
         }`}>
-          Free Shipping <br/>
-          <span className="text-amber-300 mt-4">Over Order $150</span>
+          {subheading}
         </h5>
         <button className={`btn btn-outline mt-4 text-white border-white hover:bg-white hover:text-black transition-all duration-500 delay-300 ${
           inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
         }`}>
-          Explore Now
+          {buttonText}
         </button>
       </div>
     </div>
@@ -55,10 +54,16 @@ const Twobanner = () => {
       <Banner
         image="https://foesta-demo.myshopify.com/cdn/shop/files/banner-1.png?v=1710390689&width=1420"
         altText="Spring Collection 1"
+        heading="Spring Collections"
+        subheading={<>Free Shipping <br /> <span className="text-amber-300 mt-4">Over $150</span></>}
+        buttonText="Explore Now"
       />
       <Banner
         image="https://foesta-demo.myshopify.com/cdn/shop/files/banner-2.png?v=1710390719&width=1420"
         altText="Spring Collection 2"
+        heading="Summer Sale"
+        subheading={<>Get 20% Off <br /> <span className="text-amber-300 mt-4">On All Items</span></>}
+        buttonText="Shop Now"
       />
     </div>
   );

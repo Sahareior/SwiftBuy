@@ -54,16 +54,7 @@ const Cards = ({ product }) => {
                         )}
                     </div>
 
-                    {/* Color Swatches */}
-                    <div className="flex gap-2 pt-2">
-                        {['bg-gray-800', 'bg-blue-600', 'bg-amber-600'].map((color, index) => (
-                            <span 
-                                key={index}
-                                className={`w-6 h-6 rounded-full border-2 border-white shadow-md ${color} 
-                                transition-transform hover:scale-110 cursor-pointer`}
-                            />
-                        ))}
-                    </div>
+
                 </div>
 
                 {/* Hover Overlay */}

@@ -17,11 +17,10 @@ export const AppProvider = ({ children }) => {
     try {
       const response = await axios.get('https://admin.refabry.com/api/all/product/get');
      setData(response.data.data.data);
+     setLoading(false);
     } catch (error) {
       console.error('Error fetching data:', error);
-    } finally {
-      setLoading(false);
-    }
+    } 
   };
 
   useEffect(()=>{
