@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 // Import Swiper React components
 import { Swiper, SwiperSlide } from 'swiper/react';
 
@@ -7,16 +7,37 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 
-
-
 // import required modules
 import { Pagination, Navigation } from 'swiper/modules';
+import Testimoni from '../Homepage/Testimoni';
 
-export default function CustomCarousel({images}) {
+// Import Lazy Load Image
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import 'react-lazy-load-image-component/src/effects/blur.css'; // optional blur effect
+
+export default function CustomCarousel({ images, type, testimoni }) {
+  const [isMobile, setIsMobile] = useState(false);
+
+  const detectMobile = () => {
+    if (window.innerWidth <= 768) {
+      setIsMobile(true);
+    } else {
+      setIsMobile(false);
+    }
+  };
+
+  useEffect(() => {
+    detectMobile();
+    window.addEventListener('resize', detectMobile);
+    return () => window.removeEventListener('resize', detectMobile);
+  }, []);
+
+  const sides = testimoni && !isMobile ? 3 : 1;
+
   return (
-    <>
+    <div className="relative">
       <Swiper
-        slidesPerView={1}
+        slidesPerView={sides}
         spaceBetween={30}
         loop={true}
         pagination={{
@@ -26,13 +47,26 @@ export default function CustomCarousel({images}) {
         modules={[Pagination, Navigation]}
         className="mySwiper"
       >
-    {
-        images.map(items=>     <SwiperSlide>
-            <img className='md:h-[90vh]' src={items.image} alt="" />
-        </SwiperSlide>)
-    }
-
+        {!type &&
+          images.map((items, index) => (
+            <SwiperSlide key={index}>
+              <LazyLoadImage
+                src={items.image}
+                alt=""
+                effect="blur" // 👈 adds a nice blur while loading
+                className="md:h-[90vh] w-full object-cover" // added w-full and object-cover to make it responsive
+              />
+            </SwiperSlide>
+          ))
+        }
+        {type &&
+          testimoni.map((items, index) => (
+            <SwiperSlide className="pb-10" key={index}>
+              <Testimoni testimoni={items} />
+            </SwiperSlide>
+          ))
+        }
       </Swiper>
-    </>
+    </div>
   );
 }

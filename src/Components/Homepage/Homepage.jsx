@@ -8,6 +8,7 @@ import Sections from './Sections';
 import CardShowcase from './CardShowcase/CardShowcase';
 import Twobanner from './Twobanner';
 import Blogs from './Blogs';
+import Heading from '../Shared/Heading';
 
 const Homepage = () => {
     const images = [
@@ -58,6 +59,52 @@ const Homepage = () => {
             text: 'Womens Fashion'
         },
     ]
+
+    const testimonials = [
+        {
+          name: "John Doe",
+          role: "CEO, Example Corp",
+          image: "https://i.pravatar.cc/150?img=1",
+          text: "SwiftBuy exceeded my expectations. Amazing service and support!",
+        },
+        {
+          name: "Jane Smith",
+          role: "Marketing Manager, Bright Solutions",
+          image: "https://i.pravatar.cc/150?img=2",
+          text: "A fantastic experience from start to finish. Highly recommend!",
+        },
+        {
+          name: "Emily Johnson",
+          role: "CTO, TechWiz",
+          image: "https://i.pravatar.cc/150?img=3",
+          text: "Professional, efficient, and friendly team. Loved it!",
+        },
+        {
+          name: "Michael Brown",
+          role: "Founder, StartupHub",
+          image: "https://i.pravatar.cc/150?img=4",
+          text: "Great communication and excellent results. Very satisfied!",
+        },
+        {
+          name: "Sarah Lee",
+          role: "Designer, PixelPerfect",
+          image: "https://i.pravatar.cc/150?img=5",
+          text: "They understood our vision perfectly. Thank you SwiftBuy!",
+        },
+        {
+          name: "David Wilson",
+          role: "Product Manager, InnovateX",
+          image: "https://i.pravatar.cc/150?img=6",
+          text: "Quality work delivered on time. Amazing experience!",
+        },
+        {
+          name: "Olivia Martinez",
+          role: "Freelancer",
+          image: "https://i.pravatar.cc/150?img=7",
+          text: "Very helpful and responsive. Will definitely work again!",
+        },
+      ];
+      
     return (
         <div className='bg-white text-black'>
         {/* Hero Section */}
@@ -90,16 +137,20 @@ const Homepage = () => {
         {/* Sections......................................... */}
 <div className='grid md:grid-cols-4 grid-cols-1 md:mt-8 gap-y-5 justify-items-center'>
 {
-    sections.map(items =>(
-<Sections items={items} />
+    sections.map((items,index) =>(
+<Sections key={index} items={items} />
     ))
 }
 </div>
 <div className='mt-12'>
 <CardShowcase />
 <Twobanner />
-
+<div className='mt-24'>
+<Heading text={'What Our Customers Say'} />
 </div>
+<CustomCarousel testimoni={testimonials} type={'testimoni'} />
+</div>
+
 <Blogs />
     </div>
     );

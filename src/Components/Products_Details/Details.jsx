@@ -1,9 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FaWhatsapp, FaPhone, FaTshirt, FaTruck } from 'react-icons/fa';
 import { useDispatch } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import { addToCart } from '../../Redux/slices/cartSlice';
 // import { addCart } from '../../Redux/dataSlice';
+import { ToastContainer, toast } from 'react-toastify';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 const Details = () => {
     const { state } = useLocation();
@@ -14,6 +16,12 @@ const Details = () => {
 
     const dispatch = useDispatch();
 
+    const botLeft = () => {
+        toast.success('Item has added to the cart!', {
+          position: 'bottom-left',
+        });
+      };
+
     const handleAddToCart = (total) => {
 //  console.log(total)
         dispatch( addToCart({
@@ -22,8 +30,12 @@ const Details = () => {
           total,
           selectedSize
         }));
+        botLeft()
       };
       
+      useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
 
     const sizes = productData?.short_desc.match(/\* (\w+) \(([^)]+)\)/g) || [];
     const parsedSizes = sizes.map(size => size.replace('* ', '').split(' ')[0]);
@@ -39,15 +51,19 @@ const Details = () => {
 
     return (
         <div className="container mx-auto md:px-4 px-2 text-black py-12">
+                <ToastContainer />
             <div className="grid md:grid-cols-2 gap-12">
                 {/* Image Gallery */}
                 <div className="space-y-6">
                     <figure className="aspect-square bg-base-200 rounded-2xl shadow-md overflow-hidden">
-                        <img 
-                            src={`https://admin.refabry.com/storage/product/${selectedImage}`}
-                            alt={productData.name}
-                            className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                        />
+                    <LazyLoadImage
+    src={`https://admin.refabry.com/storage/product/${selectedImage}`}
+    alt={productData.name}
+    className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+    effect="blur" // Optional effect when loading
+    height="100%" // Optional to maintain aspect ratio
+    width="100%" // Optional to maintain aspect ratio
+/>
                     </figure>
                     
                     <div className="grid grid-cols-4 gap-3">
@@ -145,9 +161,9 @@ const Details = () => {
                     {/* Quantity & Add to Cart */}
                     <div className="space-y-6">
     {/* Quantity Selector */}
-    <div className="flex items-center  border-black border-2 font- rounded-3xl md:w-52 justify-center py-2  gap-4">
+    <div className="flex items-center  border-black border-2 font- rounded-3xl md:w-52 justify-center py-1  gap-4">
         <button 
-            className="w-10 h-8 flex items-center justify-center text-2xl  rounded-full hover:bg-primary hover:text-white transition"
+            className="w-10 h-5 flex items-center justify-center text-2xl  rounded-full hover:bg-primary hover:text-white transition"
             onClick={() => setQuantity(Math.max(1, quantity - 1))}
         >
             -
@@ -156,7 +172,7 @@ const Details = () => {
             {quantity}
         </div>
         <button 
-            className="w-10 h-8 flex items-center justify-center text-2xl  rounded-full hover:bg-primary hover:text-white transition"
+            className="w-10 h-5 flex items-center justify-center text-2xl  rounded-full hover:bg-primary hover:text-white transition"
             onClick={() => setQuantity(quantity + 1)}
         >
             +

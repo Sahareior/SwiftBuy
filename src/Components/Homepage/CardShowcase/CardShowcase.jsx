@@ -5,7 +5,7 @@ import { useAppContext } from '../../../Context/AppContext';
 
 const CardShowcase = () => {
       const { user, setUser, theme, toggleTheme, loading,data } = useAppContext();
-      console.log(data)
+
     return (
         <div className='mt-24'>
             <Heading text={'Our products'} />

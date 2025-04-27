@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { FaTimes, FaTrashAlt, FaArrowLeft, FaShoppingCart, FaArrowRight } from 'react-icons/fa';
-import { HiOutlineShoppingBag } from 'react-icons/hi';
+import { ToastContainer, toast } from "react-toastify";
 import axios from 'axios';
+import { clearCart, removeFromCart } from '../../Redux/slices/cartSlice';
 
 const CartModal = ({ isOpen, onClose }) => {
   const cartItems = useSelector(state => state.cart.items);
@@ -23,6 +24,7 @@ const CartModal = ({ isOpen, onClose }) => {
       [name]: value
     }));
   };
+
 
   const handleSubmitOrder = async () => {
     const product_ids = cartItems.map(item => item.id).join(',');
@@ -45,10 +47,10 @@ const CartModal = ({ isOpen, onClose }) => {
 
     try {
       const response = await axios.post('https://admin.refabry.com/api/public/order/create', payload);
-      console.log('Order placed:', response.data);
+
       alert('Order placed successfully!');
-      onClose(); // Close modal after success
-      // Optionally clear cart too!
+      dispatch(clearCart()); 
+      onClose(); 
     } catch (error) {
       console.error('Order failed:', error);
       alert('Failed to place order. Please try again.');
@@ -59,6 +61,7 @@ const CartModal = ({ isOpen, onClose }) => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+      <ToastContainer />
       <div className="modal modal-open">
         <div className="modal-box max-w-2xl p-0 rounded-xl overflow-hidden relative">
           {/* Header */}
@@ -77,7 +80,7 @@ const CartModal = ({ isOpen, onClose }) => {
           <div className="relative w-full h-full overflow-hidden">
             <div className={`flex transition-transform duration-500 ${isCheckoutFormOpen ? '-translate-x-full' : 'translate-x-0'}`}>
               {/* Cart View */}
-              <div className="w-full p-6 flex-shrink-0">
+              <div className="w-full p-2 flex-shrink-0 ">
                 {cartItems.length === 0 ? (
                   <div className="flex flex-col items-center py-12 gap-4">
                     <div className="w-24 h-24 bg-base-200 rounded-full flex items-center justify-center">
@@ -87,11 +90,11 @@ const CartModal = ({ isOpen, onClose }) => {
                   </div>
                 ) : (
                   <>
-                    <div className="space-y-4 max-h-[60vh] overflow-y-auto pr-4">
+                    <div className="space-y-4 max-h-[60vh] overflow-y-auto ">
                       {cartItems.map(item => (
                  <div 
                  key={item.id}
-                 className="flex flex-col sm:flex-row gap-4 p-4 bg-base-100 rounded-lg hover:shadow-sm border border-base-200"
+                 className="flex flex-col w-full  sm:flex-row gap-4 md:p-4 p-1  rounded-lg hover:shadow-sm border border-base-200"
                >
                  <img 
                    src={`https://admin.refabry.com/storage/product/${item.image}`} 
@@ -99,10 +102,10 @@ const CartModal = ({ isOpen, onClose }) => {
                    className="w-full sm:w-20 h-40 sm:h-20 object-cover rounded-lg"
                  />
                  <div className="flex-1">
-                   <div className="flex justify-between items-start">
+                   <div className="flex justify-between items-center">
                      <h4 className="font-semibold text-lg">{item.name}</h4>
                      <button 
-                       // onClick={() => dispatch(removeFromCart(item.id))}
+                       onClick={() => dispatch(removeFromCart(item.id))}
                        className="text-error hover:text-error/80 transition-colors"
                        aria-label="Remove item"
                      >
@@ -126,7 +129,7 @@ const CartModal = ({ isOpen, onClose }) => {
                       ))}
                     </div>
 
-                    <div className="pt-6 space-y-6">
+                    <div className="pt-6 md:px-5 space-y-6">
                       <div className="flex justify-between items-center text-lg font-semibold border-t border-base-200 pt-4">
                         <span>Total:</span>
                         <span className="font-mono text-xl text-primary">
@@ -149,7 +152,7 @@ const CartModal = ({ isOpen, onClose }) => {
               </div>
 
               {/* Checkout Form View */}
-              <div className="w-full p-6 flex-shrink-0">
+              <div className="w-full md:p-6 p-2 flex-shrink-0">
                 <div className="space-y-4">
                   <div>
                     <label className="block font-medium mb-1">Name</label>
@@ -164,7 +167,7 @@ const CartModal = ({ isOpen, onClose }) => {
                   <div>
                     <label className="block font-medium mb-1">Phone</label>
                     <input
-                      type="text"
+                      type="number"
                       name="c_phone"
                       value={formData.c_phone}
                       onChange={handleInputChange}
